@@ -3,9 +3,14 @@ package antSimulation;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.function.Supplier;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import blocks.Block;
+import blocks.DirtWall;
+import blocks.Spot;
 
 public class Initialize extends JPanel {
 	private static final long serialVersionUID = 1L; //Why does it recommend this???  Search it up later Tom
@@ -76,6 +81,29 @@ public class Initialize extends JPanel {
 		    }
 		}
     }
+	
+	public static boolean drawBlocks(int x, int y, int radius, Supplier<Block<?>> s) {
+		if(s.get() instanceof Block<?>) {
+			Block<Object>[][] map = world.getMap();
+			double spacing = (worldWidth * zoomObj.getAspect()) / world.getMap().length;
+			
+			int i = (int) ((int)(Math.ceil(x / spacing)) + (zoomObj.getX() * zoomObj.getAspect() / spacing));
+			int j = (int) ((int)(Math.ceil(y / spacing)) + (zoomObj.getY() * zoomObj.getAspect() / spacing));
+			
+			//for()
+			DirtWall block = (DirtWall) s.get();
+
+			block.setPoint(new Spot(i, j));
+			
+			
+			
+			if(i < world.getWidth() && i > 0 && j > 0 && j < world.getHeight() && map[i][j].getId() == 1 )
+				map[i][j] = block;
+			world.setMap(map);
+		}
+		
+		return false;
+	}
 	
 	public static void zoom(int x1, int y1, double x2, double y2) {
 		zoomObj = new Zoom(x1, y1, (worldWidth * zoomObj.getAspect()) / (x2 - x1));

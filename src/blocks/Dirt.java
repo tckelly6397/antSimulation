@@ -12,4 +12,8 @@ public class Dirt extends Block<Object> {
 	public Dirt(double x, double y) {
 		super(5, 60, 5, new Color((int)(Math.random() * 30 + 135), (int)(Math.random() * 30 + 40), (int)(Math.random() * 30)), false, true, id, new Spot(x, y));
 	}
+	
+	public Dirt() {
+		super(5, 60, 5, new Color((int)(Math.random() * 30 + 135), (int)(Math.random() * 30 + 40), (int)(Math.random() * 30)), false, true, id, null);
+	}
 }

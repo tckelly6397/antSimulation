@@ -12,4 +12,10 @@ public class Air extends Block<Object> {
 	public Air(double x, double y) {
 		super(0, 0, 0, new Color(0, 230, 230), true, false, id, new Spot(x, y));
 	}
+	
+	public Air() {
+		super(0, 0, 0, new Color(0, 230, 230), true, false, id, null);
+	}
+	
+	
 }

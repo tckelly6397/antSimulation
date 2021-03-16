@@ -5,6 +5,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import blocks.DirtWall;
+
 public class MouseHandler extends MouseAdapter implements KeyListener {
 	private int mousePX = -1;
 	private int mousePY = -1;
@@ -13,7 +15,10 @@ public class MouseHandler extends MouseAdapter implements KeyListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		Initialize.zoomOut();
+		if(CTRL)
+			Initialize.zoomOut();
+		else
+			Initialize.drawBlocks(e.getX(), e.getY(), 5, DirtWall::new);
 	}
 
 	@Override
@@ -40,8 +45,10 @@ public class MouseHandler extends MouseAdapter implements KeyListener {
 	
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		if(mousePX != -1)
+		if(mousePX != -1 && CTRL)
 			Initialize.zoomRect(mousePX, mousePY, e.getX(), e.getY());
+		if(!CTRL)
+			Initialize.drawBlocks(e.getX(), e.getY(), 5, DirtWall::new);
 	}
 
 	@Override
@@ -59,8 +66,12 @@ public class MouseHandler extends MouseAdapter implements KeyListener {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if(e.getKeyCode() == KeyEvent.VK_CONTROL)
+		if(e.getKeyCode() == KeyEvent.VK_CONTROL) {
 			CTRL = false;
+			mousePX = -1;
+			mousePY = -1;
+			Initialize.resetZoomRect();
+		}
 		
 	}
 

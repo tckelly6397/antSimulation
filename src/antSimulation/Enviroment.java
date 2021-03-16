@@ -15,7 +15,7 @@ public class Enviroment {
 	private int dayLength;
 	private Block<Object>[][] map; //Look at this warning
 	
-	@SuppressWarnings("unchecked") //May wanna change this
+	@SuppressWarnings("unchecked")
 	public Enviroment(int width, int height, int dirtHeight, int wheatAmt, int wheatGrow, int dayLength) {
 		super();
 		this.width = width;
