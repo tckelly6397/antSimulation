@@ -1,4 +1,4 @@
-package blocks;
+package utils;
 
 public class Spot {
 	private double x;

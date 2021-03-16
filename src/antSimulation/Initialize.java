@@ -10,7 +10,11 @@ import javax.swing.JPanel;
 
 import blocks.Block;
 import blocks.DirtWall;
-import blocks.Spot;
+import utils.Brush;
+import utils.MouseHandler;
+import utils.Rect;
+import utils.Spot;
+import utils.Zoom;
 
 public class Initialize extends JPanel {
 	private static final long serialVersionUID = 1L; //Why does it recommend this???  Search it up later Tom
@@ -25,6 +29,7 @@ public class Initialize extends JPanel {
 	private static Rect zoomBox;
 	private static Zoom zoomObj;
 	private static MouseHandler mouseHandler = new MouseHandler();
+	private static Brush brush;
 	
 	public Initialize() {
 		addMouseListener(mouseHandler);
@@ -42,6 +47,7 @@ public class Initialize extends JPanel {
 		final int HEIGHT = (int)(envHeight * (double)worldWidth / envWidth);
 		world = new Enviroment(envWidth, envHeight, 236, 5, 2, 24);
 		zoomObj = new Zoom(0, 0, 1);
+		brush = new Brush(10, false);
 		
 		JFrame frame = new JFrame("My first ant farm");
 		Initialize init = new Initialize();
@@ -90,15 +96,17 @@ public class Initialize extends JPanel {
 			int i = (int) ((int)(Math.ceil(x / spacing)) + (zoomObj.getX() * zoomObj.getAspect() / spacing));
 			int j = (int) ((int)(Math.ceil(y / spacing)) + (zoomObj.getY() * zoomObj.getAspect() / spacing));
 			
-			//for()
-			DirtWall block = (DirtWall) s.get();
-
-			block.setPoint(new Spot(i, j));
+			for(int[] coords : brush.getActions()) {
+				DirtWall block = (DirtWall) s.get();
+				int newi = i + coords[0];
+				int newj = j + coords[1];
+				
+				block.setPoint(new Spot(newi, newj));
+				
+				if(newi < world.getWidth() && newi > 0 && newj > 0 && newj < world.getHeight() && map[newi][newj].getId() == 1 )
+					map[newi][newj] = block;
+			}
 			
-			
-			
-			if(i < world.getWidth() && i > 0 && j > 0 && j < world.getHeight() && map[i][j].getId() == 1 )
-				map[i][j] = block;
 			world.setMap(map);
 		}
 		

@@ -1,4 +1,4 @@
-package antSimulation;
+package utils;
 
 public class Zoom {
 	private int x;

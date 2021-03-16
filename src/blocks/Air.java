@@ -2,6 +2,8 @@ package blocks;
 
 import java.awt.Color;
 
+import utils.Spot;
+
 public class Air extends Block<Object> {
 	private static int id = 0;
 	

@@ -2,6 +2,8 @@ package blocks;
 
 import java.awt.Color;
 
+import utils.Spot;
+
 public abstract class Block<T> {
 	private double weight;
 	private int stackSize;

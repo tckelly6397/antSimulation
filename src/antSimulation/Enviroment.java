@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import blocks.Air;
 import blocks.Block;
 import blocks.Dirt;
+import utils.Zoom;
 
 public class Enviroment {
 	private int width;
