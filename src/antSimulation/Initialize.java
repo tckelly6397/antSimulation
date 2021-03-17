@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import blocks.Block;
 import blocks.DirtWall;
 import utils.Brush;
+import utils.GradientBar;
 import utils.MouseHandler;
 import utils.Rect;
 import utils.Spot;
@@ -18,7 +19,7 @@ import utils.Zoom;
 
 public class Initialize extends JPanel {
 	private static final long serialVersionUID = 1L; //Why does it recommend this???  Search it up later Tom
-	//private static mouseHandler mouseHandler;
+	private static JFrame frame;
 	public static final int worldWidth = 1000;
 	public static final int envWidth = 500; 
 	public static final int envHeight = 300;
@@ -41,15 +42,17 @@ public class Initialize extends JPanel {
 		world.draw(g, worldWidth, zoomObj);
 		if(zoomBox != null)
 			zoomBox.draw((Graphics2D) g);
+		g.setColor(Color.DARK_GRAY);
+		g.fillRect(worldWidth, 0, WIDTH, HEIGHT);
 	}
 	
 	public static void main(String[] args) {
 		final int HEIGHT = (int)(envHeight * (double)worldWidth / envWidth);
 		world = new Enviroment(envWidth, envHeight, 236, 5, 2, 24);
 		zoomObj = new Zoom(0, 0, 1);
-		brush = new Brush(10, false);
+		brush = new Brush(20, false);
 		
-		JFrame frame = new JFrame("My first ant farm");
+		frame = new JFrame("My first ant farm");
 		Initialize init = new Initialize();
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setSize(WIDTH + 16, HEIGHT + 39);
@@ -59,10 +62,13 @@ public class Initialize extends JPanel {
 	    frame.add(init);
 	    frame.setBackground(new Color(50, 50, 50));    
 	    frame.addKeyListener(mouseHandler);
+	    
 	    runAnimation(frame);
 	}
 	
 	public static void runAnimation(JFrame frame) {
+		double timeSpeed = 100;
+		double dt = 0;
 	    int frames = 0;
 	    long totalTime = 0;
 	    long curTime = System.currentTimeMillis();
@@ -81,6 +87,27 @@ public class Initialize extends JPanel {
 					frames = 0;
 				}
 				frames++;
+				
+				//Sky stuff
+				GradientBar gb = new GradientBar(new Color(218, 59, 58), new Color(218, 59, 58));
+			    gb.addKey(new Color(229, 128, 65), 0.00);
+			    gb.addKey(new Color(108, 167, 255), 0.03);
+			    gb.addKey(new Color(166, 225, 230), 0.05);
+			    gb.addKey(new Color(200, 245, 255), 0.25);
+			    gb.addKey(new Color(166, 225, 230), 0.45);
+			    gb.addKey(new Color(108, 167, 255), 0.47);
+			    gb.addKey(new Color(229, 128, 65), 0.49);
+			    gb.addKey(new Color(25, 5, 28), 0.5);
+			    gb.addKey(new Color(5, 0, 8), 0.725);
+			    gb.addKey(new Color(25, 5, 28), 0.95);
+			    gb.addKey(new Color(229, 128, 65), 1);
+			    
+			    frame.setBackground(gb.getColor(dt / (world.getDayLength() * timeSpeed)));
+			    world.setTimeAspect(dt / (world.getDayLength() * timeSpeed));
+			    dt++;
+			    if(dt >= world.getDayLength() * timeSpeed)
+			    	dt = 0;
+			    
 				Thread.sleep(1);
 		    } catch (InterruptedException e) {
 		    	
@@ -103,7 +130,7 @@ public class Initialize extends JPanel {
 				
 				block.setPoint(new Spot(newi, newj));
 				
-				if(newi < world.getWidth() && newi > 0 && newj > 0 && newj < world.getHeight() && map[newi][newj].getId() == 1 )
+				if(newi < world.getWidth() && newi >= 0 && newj > 0 && newj < world.getHeight() && map[newi][newj].getId() == 1 )
 					map[newi][newj] = block;
 			}
 			

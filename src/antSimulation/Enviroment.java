@@ -1,5 +1,6 @@
 package antSimulation;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import blocks.Air;
@@ -14,6 +15,7 @@ public class Enviroment {
 	private int wheatAmt;
 	private int wheatGrow;
 	private int dayLength;
+	private double timeAspect;
 	private Block<Object>[][] map; //Look at this warning
 	
 	@SuppressWarnings("unchecked")
@@ -46,6 +48,10 @@ public class Enviroment {
 	public boolean draw(Graphics g, int worldWidth, Zoom zoomObj) {
 		double spacing = (worldWidth * zoomObj.getAspect()) / map.length;
 		
+		g.setColor(Color.YELLOW);
+	    g.fillOval((int)(Math.cos(Math.PI * 2 * timeAspect + Math.PI) * 200 + (worldWidth / 2) - 25), (int)(Math.sin(Math.PI * 2 * timeAspect + Math.PI) * 200 + ((height - dirtHeight) * spacing * zoomObj.getAspect() + 25)), 100, 100);
+		g.setColor(new Color(100, 100, 100));
+		g.fillOval((int)(Math.cos(Math.PI * 2 * timeAspect) * 200 + (worldWidth / 2) - 12), (int)(Math.sin(Math.PI * 2 * timeAspect) * 200 + ((height - dirtHeight) * spacing * zoomObj.getAspect() + 12)), 50, 50);
 	    for(int i = 0; i < map.length; i++) {
 	    	for(int j = 0; j < map[i].length; j++) {
 	    		g.setColor(map[i][j].getC());
@@ -54,11 +60,9 @@ public class Enviroment {
 	    		int y = (int)(Math.ceil((j * spacing) - (zoomObj.getY() * zoomObj.getAspect()))); //Think about this later, for now congratulations on messing up one variable
 	    		int size = (int)Math.ceil(spacing);
 	    		g.fillRect(x, y, size, size);
-	    		//g.setColor(Color.BLACK);
-	    		//g.drawRect((int)(i * spacing), (int)(j * spacing), (int)spacing, (int)spacing);
-	    		//System.out.println(map[i][j]);
 	    	}
 	    }
+	 
 		return true;
 	}
 
@@ -108,6 +112,14 @@ public class Enviroment {
 
 	public void setDayLength(int dayLength) {
 		this.dayLength = dayLength;
+	}
+
+	public double getTimeAspect() {
+		return timeAspect;
+	}
+
+	public void setTimeAspect(double timeAspect) {
+		this.timeAspect = timeAspect;
 	}
 
 	public Block<Object>[][] getMap() {
