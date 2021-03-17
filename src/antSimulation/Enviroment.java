@@ -2,10 +2,12 @@ package antSimulation;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import blocks.Air;
 import blocks.Block;
 import blocks.Dirt;
+import utils.Star;
 import utils.Zoom;
 
 public class Enviroment {
@@ -16,10 +18,13 @@ public class Enviroment {
 	private int wheatGrow;
 	private int dayLength;
 	private double timeAspect;
+	private int starCount;
+	private double spacing;
+	private ArrayList<Star> stars = new ArrayList<>();
 	private Block<Object>[][] map; //Look at this warning
 	
 	@SuppressWarnings("unchecked")
-	public Enviroment(int width, int height, int dirtHeight, int wheatAmt, int wheatGrow, int dayLength) {
+	public Enviroment(int width, int height, int dirtHeight, int wheatAmt, int wheatGrow, int dayLength, int starCount) {
 		super();
 		this.width = width;
 		this.height = height;
@@ -27,6 +32,7 @@ public class Enviroment {
 		this.wheatAmt = wheatAmt;
 		this.wheatGrow = wheatGrow;
 		this.dayLength = dayLength;
+		this.starCount = starCount;
 		this.map = new Block[width][height]; //Check this, may have to be height width		
 		init();
 	}
@@ -41,18 +47,41 @@ public class Enviroment {
 					map[i][j] = new Dirt(i, j);
 			}
 		}
+			
+		return true;
+	}
+	
+	public boolean createStars(int worldWidth) {
+		spacing = worldWidth / map.length; //Look here, you will have to change star positions based on the zoom aspect in the draw function
+		
+		for(int i = 0; i < starCount; i++) 
+			stars.add(new Star(Math.random() * worldWidth, Math.random() * (height - dirtHeight) * spacing, new Color((int)(Math.random() * 255), (int)(Math.random() * 255), (int)(Math.random() * 255))));
+		
 		return true;
 	}
 	
 	/*Draw the map from the map array*/
 	public boolean draw(Graphics g, int worldWidth, Zoom zoomObj) {
-		double spacing = (worldWidth * zoomObj.getAspect()) / map.length;
+		spacing = (worldWidth * zoomObj.getAspect()) / map.length;
 		
+		//Draw stars
+		if(timeAspect > 0.5)
+		for(Star s : stars) {
+			double nightAspect = (timeAspect - 0.5) * 2;
+			Color sc = s.getColor();
+			Color c = new Color(sc.getRed(), sc.getGreen(), sc.getBlue(), (int)(255 * Math.sin(nightAspect * Math.PI)));
+			g.setColor(c);
+			g.fillRect((int)s.getX(), (int)s.getY(), 1, 1);
+		}
+		
+		//Draw soon and moon
 		g.setColor(Color.YELLOW);
 	    g.fillOval((int)(Math.cos(Math.PI * 2 * timeAspect + Math.PI) * 200 + (worldWidth / 2) - 25), (int)(Math.sin(Math.PI * 2 * timeAspect + Math.PI) * 200 + ((height - dirtHeight) * spacing * zoomObj.getAspect() + 25)), 100, 100);
 		g.setColor(new Color(100, 100, 100));
 		g.fillOval((int)(Math.cos(Math.PI * 2 * timeAspect) * 200 + (worldWidth / 2) - 12), (int)(Math.sin(Math.PI * 2 * timeAspect) * 200 + ((height - dirtHeight) * spacing * zoomObj.getAspect() + 12)), 50, 50);
-	    for(int i = 0; i < map.length; i++) {
+	    
+		//Draw Blocks
+		for(int i = 0; i < map.length; i++) {
 	    	for(int j = 0; j < map[i].length; j++) {
 	    		g.setColor(map[i][j].getC());
 	    		
@@ -62,7 +91,7 @@ public class Enviroment {
 	    		g.fillRect(x, y, size, size);
 	    	}
 	    }
-	 
+		
 		return true;
 	}
 

@@ -48,12 +48,15 @@ public class Initialize extends JPanel {
 	
 	public static void main(String[] args) {
 		final int HEIGHT = (int)(envHeight * (double)worldWidth / envWidth);
-		world = new Enviroment(envWidth, envHeight, 236, 5, 2, 24);
+		Initialize init = new Initialize();
+		
+		world = new Enviroment(envWidth, envHeight, 236, 5, 2, 24, 500);
+		world.createStars(worldWidth);
+		
 		zoomObj = new Zoom(0, 0, 1);
-		brush = new Brush(20, false);
+		brush = new Brush(5, false);
 		
 		frame = new JFrame("My first ant farm");
-		Initialize init = new Initialize();
 	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    frame.setSize(WIDTH + 16, HEIGHT + 39);
 	    frame.setVisible(true);
@@ -67,7 +70,7 @@ public class Initialize extends JPanel {
 	}
 	
 	public static void runAnimation(JFrame frame) {
-		double timeSpeed = 100;
+		double timeSpeed = 10;
 		double dt = 0;
 	    int frames = 0;
 	    long totalTime = 0;
