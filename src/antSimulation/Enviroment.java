@@ -71,14 +71,18 @@ public class Enviroment {
 			Color sc = s.getColor();
 			Color c = new Color(sc.getRed(), sc.getGreen(), sc.getBlue(), (int)(255 * Math.sin(nightAspect * Math.PI)));
 			g.setColor(c);
-			g.fillRect((int)s.getX(), (int)s.getY(), 1, 1);
+			g.fillRect((int)((s.getX() * spacing) - (zoomObj.getX() * zoomObj.getAspect())), (int)((s.getY() * spacing) - (zoomObj.getY() * zoomObj.getAspect())), (int)(1 * zoomObj.getAspect()), (int)(1 * zoomObj.getAspect()));
 		}
 		
 		//Draw soon and moon
 		g.setColor(Color.YELLOW);
-	    g.fillOval((int)(Math.cos(Math.PI * 2 * timeAspect + Math.PI) * 200 + (worldWidth / 2) - 25), (int)(Math.sin(Math.PI * 2 * timeAspect + Math.PI) * 200 + ((height - dirtHeight) * spacing * zoomObj.getAspect() + 25)), 100, 100);
+		int sunX = (int)(Math.cos(Math.PI * 2 * timeAspect + Math.PI) * (200 * zoomObj.getAspect()) + (((worldWidth / 2) - 25) * zoomObj.getAspect()) - (zoomObj.getX() * zoomObj.getAspect()));
+	    int sunY = (int)(Math.sin(Math.PI * 2 * timeAspect + Math.PI) * (200 * zoomObj.getAspect()) + (((height - dirtHeight) + 25) * zoomObj.getAspect()) - (zoomObj.getY() * zoomObj.getAspect()));
+		g.fillOval(sunX, sunY, (int)(100 * zoomObj.getAspect()), (int)(100 * zoomObj.getAspect()));
 		g.setColor(new Color(100, 100, 100));
-		g.fillOval((int)(Math.cos(Math.PI * 2 * timeAspect) * 200 + (worldWidth / 2) - 12), (int)(Math.sin(Math.PI * 2 * timeAspect) * 200 + ((height - dirtHeight) * spacing * zoomObj.getAspect() + 12)), 50, 50);
+		int moonX = (int)(Math.cos(Math.PI * 2 * timeAspect) * (200 * zoomObj.getAspect()) + (((worldWidth / 2) - 12) * zoomObj.getAspect()) - (zoomObj.getX() * zoomObj.getAspect()));
+		int moonY = (int)(Math.sin(Math.PI * 2 * timeAspect) * (200 * zoomObj.getAspect()) + (((height - dirtHeight) + 50) * zoomObj.getAspect()) - (zoomObj.getY() * zoomObj.getAspect()));
+		g.fillOval(moonX, moonY, (int)(50 * zoomObj.getAspect()), (int)(50 * zoomObj.getAspect()));
 	    
 		//Draw Blocks
 		for(int i = 0; i < map.length; i++) {
