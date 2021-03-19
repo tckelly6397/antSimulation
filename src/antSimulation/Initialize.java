@@ -52,7 +52,7 @@ public class Initialize extends JPanel {
 		double spacing = worldWidth / (world.getMap().length * 2);
 		if(path != null)
 		for(Node n : path)
-			g.fillRect((int)(n.getX() / spacing), (int)(n.getY() / spacing), (int)spacing, (int)spacing);
+			g.fillRect((int)(n.getX() / spacing * zoomObj.getAspect()) - (int)(zoomObj.getX() * zoomObj.getAspect()), (int)(n.getY() / spacing * zoomObj.getAspect()) - (int)(zoomObj.getY() * zoomObj.getAspect()), (int)(spacing * zoomObj.getAspect()), (int)(spacing * zoomObj.getAspect()));
 	}
 	
 	public static void main(String[] args) {

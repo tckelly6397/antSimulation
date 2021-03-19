@@ -81,9 +81,10 @@ public abstract class State<T> {
 		ArrayList<Node> closed = new ArrayList<>();
 		Block<Object>[][] map = Initialize.world.getMap();
 		
+		int sensitivity = 2;
 		int width = Initialize.worldWidth;
-		double spacing = width / (map.length);
-		Node[][] nodes = createNodeGrid(map.length, map[0].length, spacing);
+		double spacing = width / (map.length / sensitivity);
+		Node[][] nodes = createNodeGrid(map.length / sensitivity, map[0].length / sensitivity, spacing);
 		
 		int pos1X = (int)(x1 / spacing);
 		int pos1Y = (int)(y1 / spacing);
