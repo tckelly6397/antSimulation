@@ -3,6 +3,7 @@ package antSimulation;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.ArrayList;
 import java.util.function.Supplier;
 
 import javax.swing.JFrame;
@@ -13,6 +14,7 @@ import blocks.DirtWall;
 import utils.Brush;
 import utils.GradientBar;
 import utils.MouseHandler;
+import utils.Node;
 import utils.Rect;
 import utils.Spot;
 import utils.Zoom;
@@ -20,10 +22,10 @@ import utils.Zoom;
 public class Initialize extends JPanel {
 	private static final long serialVersionUID = 1L; //Why does it recommend this???  Search it up later Tom
 	private static JFrame frame;
-	public static final int worldWidth = 1000;
 	public static final int envWidth = 500; 
 	public static final int envHeight = 300;
 	public static final int WIDTH = 1200;
+	public static final int worldWidth = 1000;
 	public static final int HEIGHT = (int)(envHeight * (double)worldWidth / envWidth);
 	public static int fps = 0;
 	public static Enviroment world;
@@ -31,6 +33,7 @@ public class Initialize extends JPanel {
 	private static Zoom zoomObj;
 	private static MouseHandler mouseHandler = new MouseHandler();
 	private static Brush brush;
+	public static ArrayList<Node> path;
 	
 	public Initialize() {
 		addMouseListener(mouseHandler);
@@ -44,6 +47,12 @@ public class Initialize extends JPanel {
 			zoomBox.draw((Graphics2D) g);
 		g.setColor(Color.DARK_GRAY);
 		g.fillRect(worldWidth, 0, WIDTH, HEIGHT);
+		
+		g.setColor(Color.GREEN);
+		double spacing = worldWidth / (world.getMap().length * 2);
+		if(path != null)
+		for(Node n : path)
+			g.fillRect((int)(n.getX() / spacing), (int)(n.getY() / spacing), (int)spacing, (int)spacing);
 	}
 	
 	public static void main(String[] args) {
@@ -70,7 +79,7 @@ public class Initialize extends JPanel {
 	}
 	
 	public static void runAnimation(JFrame frame) {
-		double timeSpeed = 10;
+		double timeSpeed = 100;
 		double dt = 0;
 	    int frames = 0;
 	    long totalTime = 0;

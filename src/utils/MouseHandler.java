@@ -5,8 +5,11 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+import javax.swing.SwingUtilities;
+
 import antSimulation.Initialize;
 import blocks.DirtWall;
+import state.State;
 
 public class MouseHandler extends MouseAdapter implements KeyListener {
 	private int mousePX = -1;
@@ -16,6 +19,13 @@ public class MouseHandler extends MouseAdapter implements KeyListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
+		//System.out.println(State.isWalkable(e.getX(), e.getY()));
+		
+		if(SwingUtilities.isRightMouseButton(e)) {
+			long firstTime = System.currentTimeMillis();
+			Initialize.path = State.pathFind(0, 0, e.getX(), e.getY());
+			System.out.println("Operation took " + ((double)(System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
+		}
 		if(CTRL)
 			Initialize.zoomOut();
 		else
