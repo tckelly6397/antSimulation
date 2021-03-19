@@ -79,7 +79,7 @@ public class Initialize extends JPanel {
 	}
 	
 	public static void runAnimation(JFrame frame) {
-		double timeSpeed = 100;
+		double timeSpeed = 500;
 		double dt = 0;
 	    int frames = 0;
 	    long totalTime = 0;
