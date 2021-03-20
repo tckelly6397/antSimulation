@@ -74,7 +74,6 @@ public class NodeHeap {
 				swap(item, parentItem);
 			else
 				break;
-			
 		}
 	}
 	
