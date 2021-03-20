@@ -79,6 +79,7 @@ public class Enviroment {
 		int sunX = (int)(Math.cos(Math.PI * 2 * timeAspect + Math.PI) * (200 * zoomObj.getAspect()) + (((worldWidth / 2) - 25) * zoomObj.getAspect()) - (zoomObj.getX() * zoomObj.getAspect()));
 	    int sunY = (int)(Math.sin(Math.PI * 2 * timeAspect + Math.PI) * (200 * zoomObj.getAspect()) + (((height - dirtHeight) + 25) * zoomObj.getAspect()) - (zoomObj.getY() * zoomObj.getAspect()));
 		g.fillOval(sunX, sunY, (int)(100 * zoomObj.getAspect()), (int)(100 * zoomObj.getAspect()));
+		
 		g.setColor(new Color(100, 100, 100));
 		int moonX = (int)(Math.cos(Math.PI * 2 * timeAspect) * (200 * zoomObj.getAspect()) + (((worldWidth / 2) - 12) * zoomObj.getAspect()) - (zoomObj.getX() * zoomObj.getAspect()));
 		int moonY = (int)(Math.sin(Math.PI * 2 * timeAspect) * (200 * zoomObj.getAspect()) + (((height - dirtHeight) + 50) * zoomObj.getAspect()) - (zoomObj.getY() * zoomObj.getAspect()));

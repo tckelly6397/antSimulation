@@ -6,9 +6,13 @@ import java.util.Collections;
 import antSimulation.Initialize;
 import blocks.Block;
 import utils.Node;
+import utils.NodeHeap;
 
 public abstract class State<T> {
 	
+	
+	//Path finding, thank you Sebastian Lague
+	//https://www.youtube.com/watch?v=-L-WgKMFuhE
 	public static boolean isWalkable(double x, double y) {
 		Block<Object>[][] map = Initialize.world.getMap();
 		double spacing = Initialize.worldWidth / map.length;
@@ -77,14 +81,17 @@ public abstract class State<T> {
 	
 	public static ArrayList<Node> pathFind(double x1, double y1, double x2, double y2) {
 		//ArrayList<Node> path = new ArrayList<>();
-		ArrayList<Node> open = new ArrayList<>();
-		ArrayList<Node> closed = new ArrayList<>();
-		Block<Object>[][] map = Initialize.world.getMap();
-		
 		int sensitivity = 2;
+		Block<Object>[][] map = Initialize.world.getMap();
+		int nodeSizeX = map.length / sensitivity;
+		int nodeSizeY = map[0].length / sensitivity;
+		
+		NodeHeap open = new NodeHeap(nodeSizeX * nodeSizeY);
+		ArrayList<Node> closed = new ArrayList<>();
+		
 		int width = Initialize.worldWidth;
-		double spacing = width / (map.length / sensitivity);
-		Node[][] nodes = createNodeGrid(map.length / sensitivity, map[0].length / sensitivity, spacing);
+		double spacing = width / (nodeSizeX);
+		Node[][] nodes = createNodeGrid(nodeSizeX, nodeSizeY, spacing);
 		
 		int pos1X = (int)(x1 / spacing);
 		int pos1Y = (int)(y1 / spacing);
@@ -95,14 +102,8 @@ public abstract class State<T> {
 		Node targetNode = nodes[pos2X][pos2Y];
 		open.add(startNode);
 		
-		while(open.size() > 0) {
-			Node currentNode = open.get(0);
-			for(int i = 1; i < open.size(); i++) {
-				if(open.get(i).getCost() < currentNode.getCost() || open.get(i).getCost() == currentNode.getCost() && open.get(i).getHCost() < currentNode.getHCost())
-					currentNode = open.get(i);
-			}
-			
-			open.remove(currentNode);
+		while(open.count() > 0) {
+			Node currentNode = open.removeFirst();
 			closed.add(currentNode);
 			
 			if(currentNode == targetNode) {

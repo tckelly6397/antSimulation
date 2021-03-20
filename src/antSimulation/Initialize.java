@@ -79,7 +79,7 @@ public class Initialize extends JPanel {
 	}
 	
 	public static void runAnimation(JFrame frame) {
-		double timeSpeed = 500;
+		double timeSpeed = 100;
 		double dt = 0;
 	    int frames = 0;
 	    long totalTime = 0;
@@ -154,7 +154,6 @@ public class Initialize extends JPanel {
 	
 	public static void zoom(int x1, int y1, double x2, double y2) {
 		zoomObj = new Zoom(x1, y1, (worldWidth * zoomObj.getAspect()) / (x2 - x1));
-		//System.out.println(zoomObj);
 	}
 	
 	public static void zoomOut() {
