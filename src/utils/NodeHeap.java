@@ -21,6 +21,7 @@ public class NodeHeap {
 	public Node removeFirst() {
 		Node firstItem = items[0];
 		currentCount--;
+		if(currentCount == -1) return null;
 		items[0] = items[currentCount];
 		items[0].setIndex(0);
 		sortDown(items[0]);

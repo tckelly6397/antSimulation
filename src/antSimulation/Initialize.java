@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import blocks.Block;
-import blocks.DirtWall;
+import state.TestState;
 import utils.Brush;
 import utils.GradientBar;
 import utils.MouseHandler;
@@ -33,7 +33,8 @@ public class Initialize extends JPanel {
 	private static Zoom zoomObj;
 	private static MouseHandler mouseHandler = new MouseHandler();
 	private static Brush brush;
-	public static ArrayList<Node> path;
+	public static TestState ts;
+	public static ArrayList<Node> path = new ArrayList<>();
 	
 	public Initialize() {
 		addMouseListener(mouseHandler);
@@ -50,9 +51,11 @@ public class Initialize extends JPanel {
 		
 		g.setColor(Color.GREEN);
 		double spacing = worldWidth / (world.getMap().length * 2);
+		
 		if(path != null)
 		for(Node n : path)
 			g.fillRect((int)(n.getX() / spacing * zoomObj.getAspect()) - (int)(zoomObj.getX() * zoomObj.getAspect()), (int)(n.getY() / spacing * zoomObj.getAspect()) - (int)(zoomObj.getY() * zoomObj.getAspect()), (int)(spacing * zoomObj.getAspect()), (int)(spacing * zoomObj.getAspect()));
+		
 	}
 	
 	public static void main(String[] args) {
@@ -100,6 +103,13 @@ public class Initialize extends JPanel {
 				}
 				frames++;
 				
+				if(ts != null) {
+					long firstTime = System.currentTimeMillis();
+					path = ts.getPath();
+					System.out.println("Operation took " + ((double)(System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
+					ts = null;
+				}
+				
 				//Sky stuff
 				GradientBar gb = new GradientBar(new Color(218, 59, 58), new Color(218, 59, 58));
 			    gb.addKey(new Color(229, 128, 65), 0.00);
@@ -127,7 +137,7 @@ public class Initialize extends JPanel {
 		}
     }
 	
-	public static boolean drawBlocks(int x, int y, int radius, Supplier<Block<?>> s) {
+	public static boolean drawBlocks(int x, int y, int radius, Supplier<Block<?>> s, boolean walk) {
 		if(s.get() instanceof Block<?>) {
 			Block<Object>[][] map = world.getMap();
 			double spacing = (worldWidth * zoomObj.getAspect()) / world.getMap().length;
@@ -136,13 +146,14 @@ public class Initialize extends JPanel {
 			int j = (int) ((int)(Math.ceil(y / spacing)) + (zoomObj.getY() * zoomObj.getAspect() / spacing));
 			
 			for(int[] coords : brush.getActions()) {
-				DirtWall block = (DirtWall) s.get();
+				@SuppressWarnings("unchecked")
+				Block<Object> block = (Block<Object>) s.get();
 				int newi = i + coords[0];
 				int newj = j + coords[1];
 				
 				block.setPoint(new Spot(newi, newj));
 				
-				if(newi < world.getWidth() && newi >= 0 && newj > 0 && newj < world.getHeight() && map[newi][newj].getId() == 1 )
+				if(newi < world.getWidth() && newi >= 0 && newj >= 0 && newj < world.getHeight() && map[newi][newj].isTransparent() == !walk)
 					map[newi][newj] = block;
 			}
 			

@@ -8,28 +8,32 @@ import java.awt.event.MouseEvent;
 import javax.swing.SwingUtilities;
 
 import antSimulation.Initialize;
+import blocks.Dirt;
 import blocks.DirtWall;
-import state.State;
+import state.TestState;
 
 public class MouseHandler extends MouseAdapter implements KeyListener {
 	private int mousePX = -1;
 	private int mousePY = -1;
 	private boolean CTRL = false;
+	private boolean SHIFT = false;
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		//System.out.println(State.isWalkable(e.getX(), e.getY()));
 		
-		if(SwingUtilities.isRightMouseButton(e)) {
-			long firstTime = System.currentTimeMillis();
-			Initialize.path = State.pathFind(0, 0, e.getX(), e.getY());
-			System.out.println("Operation took " + ((double)(System.currentTimeMillis() - firstTime) / 1000) + " seconds.");
-		}
+		if(SwingUtilities.isRightMouseButton(e))
+			Initialize.ts = new TestState(0, 0, e.getX(), e.getY());
+			
 		if(CTRL)
 			Initialize.zoomOut();
 		else
-			Initialize.drawBlocks(e.getX(), e.getY(), 5, DirtWall::new);
+			if(!SHIFT)
+				Initialize.drawBlocks(e.getX(), e.getY(), 5, DirtWall::new, true);
+			else
+				Initialize.drawBlocks(e.getX(), e.getY(), 5, Dirt::new, false);
+				
 	}
 
 	@Override
@@ -59,7 +63,10 @@ public class MouseHandler extends MouseAdapter implements KeyListener {
 		if(mousePX != -1 && CTRL)
 			Initialize.zoomRect(mousePX, mousePY, e.getX(), e.getY());
 		if(!CTRL)
-			Initialize.drawBlocks(e.getX(), e.getY(), 5, DirtWall::new);
+			if(!SHIFT)
+				Initialize.drawBlocks(e.getX(), e.getY(), 5, DirtWall::new, true);
+			else
+				Initialize.drawBlocks(e.getX(), e.getY(), 5, Dirt::new, false);
 	}
 
 	@Override
@@ -72,6 +79,8 @@ public class MouseHandler extends MouseAdapter implements KeyListener {
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_CONTROL)
 			CTRL = true;
+		if(e.getKeyCode() == KeyEvent.VK_SHIFT)
+			SHIFT = true;
 		//System.out.println(e);
 	}
 
@@ -82,6 +91,9 @@ public class MouseHandler extends MouseAdapter implements KeyListener {
 			mousePX = -1;
 			mousePY = -1;
 			Initialize.resetZoomRect();
+		}
+		if(e.getKeyCode() == KeyEvent.VK_SHIFT) {
+			SHIFT = false;
 		}
 		
 	}

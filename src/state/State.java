@@ -104,6 +104,7 @@ public abstract class State<T> {
 		
 		while(open.count() > 0) {
 			Node currentNode = open.removeFirst();
+			if(currentNode == null) return null;
 			closed.add(currentNode);
 			
 			if(currentNode == targetNode) {

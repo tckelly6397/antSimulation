@@ -18,4 +18,5 @@ public class DirtWall extends Block<Object> {
 	public DirtWall() {
 		super(5, 60, 5, new Color((int)(Math.random() * 30 + 90), (int)(Math.random() * 20 + 30), (int)(Math.random() * 0)), true, false, id, null);
 	}
+
 }
