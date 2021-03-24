@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.ArrayList;
+
 public class Node {
 	private double hCost;
 	private double gCost;
@@ -14,6 +16,18 @@ public class Node {
 		this.x = x;
 		this.y = y;
 		this.canWalk = canWalk;
+	}
+	
+	public static ArrayList<Spot> pathAsSpot(ArrayList<Node> path) {
+		ArrayList<Spot> points = new ArrayList<>();
+		for(Node n : path)
+			points.add(n.getSpot());
+		
+		return points;
+	}
+	
+	public Spot getSpot() {
+		return new Spot(x, y);
 	}
 
 	public double getCost() {
@@ -86,6 +100,7 @@ public class Node {
 
 	@Override
 	public String toString() {
-		return "Node [cost=" + (gCost + hCost) + ", canWalk=" + canWalk + "]";
+		return "Node [hCost=" + hCost + ", gCost=" + gCost + ", x=" + x + ", y=" + y + ", index=" + index + ", canWalk="
+				+ canWalk + ", parent=" + parent + "]";
 	}
 }

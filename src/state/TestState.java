@@ -2,7 +2,7 @@ package state;
 
 import java.util.ArrayList;
 
-import utils.Node;
+import utils.Spot;
 
 public class TestState extends State<Object> {
 	private double x1, y1, x2, y2;
@@ -15,8 +15,8 @@ public class TestState extends State<Object> {
 		this.y2 = y2;
 	}
 	
-	public ArrayList<Node> getPath() {
-		return pathFind(x1, y1, x2, y2);
+	public ArrayList<Spot> getPath() {
+		return findPath(x1, y1, x2, y2);
 	}
 
 }

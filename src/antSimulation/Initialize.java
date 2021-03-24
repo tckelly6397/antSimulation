@@ -14,7 +14,6 @@ import state.TestState;
 import utils.Brush;
 import utils.GradientBar;
 import utils.MouseHandler;
-import utils.Node;
 import utils.Rect;
 import utils.Spot;
 import utils.Zoom;
@@ -34,7 +33,7 @@ public class Initialize extends JPanel {
 	private static MouseHandler mouseHandler = new MouseHandler();
 	private static Brush brush;
 	public static TestState ts;
-	public static ArrayList<Node> path = new ArrayList<>();
+	public static ArrayList<Spot> path = new ArrayList<>();
 	
 	public Initialize() {
 		addMouseListener(mouseHandler);
@@ -53,7 +52,7 @@ public class Initialize extends JPanel {
 		double spacing = worldWidth / (world.getMap().length * 2);
 		
 		if(path != null)
-		for(Node n : path)
+		for(Spot n : path)
 			g.fillRect((int)(n.getX() / spacing * zoomObj.getAspect()) - (int)(zoomObj.getX() * zoomObj.getAspect()), (int)(n.getY() / spacing * zoomObj.getAspect()) - (int)(zoomObj.getY() * zoomObj.getAspect()), (int)(spacing * zoomObj.getAspect()), (int)(spacing * zoomObj.getAspect()));
 		
 	}

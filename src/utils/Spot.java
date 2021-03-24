@@ -27,6 +27,18 @@ public class Spot {
 		return Math.atan2((s.getY() - y), (s.getX() - x));
 	}
 	
+	public Spot subtract(Spot s2) {
+		double newX = s2.getX() - this.x;
+		double newY = s2.getY() - this.y;
+		return new Spot(newX, newY);
+	}
+	
+	public Spot add(Spot s2) {
+		double newX = s2.getX() + this.x;
+		double newY = s2.getY() + this.y;
+		return new Spot(newX, newY);
+	}
+	
 	public boolean setSpot(double x, double y) {
 		this.x = x;
 		this.y = y;
@@ -63,6 +75,17 @@ public class Spot {
 
 	public void setY(double y) {
 		this.y = y;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof Spot)) return false;
+		Spot s2 = (Spot)o;
+		
+		if(x == s2.getX() && y == s2.getY())
+			return true;
+		
+		return false;
 	}
 
 	@Override
